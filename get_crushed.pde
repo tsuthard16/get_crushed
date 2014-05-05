@@ -15,10 +15,28 @@ The delay of the cieling falling will decrease each time.
 If the player presses a button, it will speed up his character's movement, which
 will help in the late game.
 
+
+
+The wall.
+Psuedo-code from Mr. Kiang:
+void wallHole(){
+  pick a random(8);
+  set the point at that index to be color 0
+}
+
 */
 
 #include <MeggyJrSimple.h>
 
+struct point
+{
+  int x;
+  int y;
+  int color;
+};
+
+
+point wall[8] = {{0,7}, {1,7}, {2,7}, {3,7}, {4,7}, {5,7}, {6,7}, {7,7}};
 
 
 //////////Global Variables//////////
@@ -39,27 +57,17 @@ void setup()
 }
 
 
-
-/*void ceiling()
+void newCeiling()
 {
-  for(int i = 0; i < 8; i++)
+  for(int i = 7; i >= 0; i--)
   {
-    for(int j = 7; j < 8; j++)
-    {
-      if (j > 0)
-      {
-        j--;
-        DrawPx(i,j, Green);
-      }
-      else
-      {
-        ClearSlate();
-        j = 7;
-        DrawPx(i, j, Green);
-      }
-    }
+    DrawPx(wall[i].x, wall[i].y, White);
   }
-}*/
+}
+
+void ceilingMove()
+{
+  
 
 void ceiling()
 {
@@ -162,8 +170,8 @@ void directions()  //was having a weird problem with the left not registering, D
 void loop()
 { 
   ClearSlate();
-  ceiling();
-  gapUpdate();
+  newCeiling();
+  //gapUpdate();
   directions();
   movePlayer();
   DisplaySlate();
