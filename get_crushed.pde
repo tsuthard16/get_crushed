@@ -75,6 +75,23 @@ void ceiling()
     }
   }
 }
+
+void ceilingHole()
+{
+  for(int y = 7; y >=0; y--)
+  {
+    DrawPx(random(8), y, Green);
+    if( y >=0)
+    {
+      y--;
+    }
+    else
+    {
+      y = 7;
+      DrawPx(random(8), y, Green);
+    }
+  }
+}
     
 
 //###################
@@ -166,7 +183,7 @@ void loop()
   directions();
   movePlayer();
   DisplaySlate();
-  delay(40);
+  delay(80);
 }
 
 //###########
