@@ -17,7 +17,7 @@ will help in the late game.
 
 
 
-The wall.
+The wall's hole.
 Psuedo-code from Mr. Kiang:
 void wallHole(){
   pick a random(8);
@@ -38,18 +38,20 @@ struct point
 
 point wall[8] = {{0,7}, {1,7}, {2,7}, {3,7}, {4,7}, {5,7}, {6,7}, {7,7}};
 
+//#############
+//##VARIABLES##
+//#############
 
-//////////Global Variables//////////
-int i=0;
-int j=7;
-byte playerx=3;
-byte playery=0;
-byte delayplayer=100;
-int playerDirection=0;  //1 moves left, 2 moves right
-byte gapX=random(8);
-byte gapY;
-byte ceilingX=0;
-byte ceilingY=7;
+int i = 0;
+int j = 7;
+byte playerx = 3;
+byte playery = 0;
+int playerDirection = 0;  //1 moves left, 2 moves right
+int restOfCeiling = 8;
+
+//#######
+//##END##
+//#######
 
 void setup()
 {
@@ -57,53 +59,27 @@ void setup()
 }
 
 
-void newCeiling()
+void ceiling()
 {
   for(int i = 7; i >= 0; i--)
   {
     DrawPx(wall[i].x, wall[i].y, White);
+    if(wall[i].y >= 0)
+    {
+      wall[i].y--;
+    }
+    else  //makes the ceiling loop back around to the top
+    {
+      wall[i].y = 7;
+      DrawPx(wall[i].x, wall[i].y, White);
+    }
   }
 }
+    
 
-void ceilingMove()
-{
-  
-
-void ceiling()
-{
-  if(ceilingY > 0)
-  {
-    ceilingY--;
-    DrawPx(ceilingX, ceilingY, Green);
-    delay(100);
-  }
-  else
-  {
-    ClearSlate();
-    ceilingY=7;
-    DrawPx(ceilingX, ceilingY, Green);
-  }
-}
-
-void gapUpdate()
-{
-  if (gapY > 0)
-  {
-    gapY--;
-    DrawPx(gapX, gapY, Red);
-    delay(100);
-  }
-  else
-  {
-    ClearSlate();
-    gapY=7;
-    gapX=random(8);
-    DrawPx(gapX, gapY, Red);
-  }
-}
-
-
-
+//###################
+//##PLAYER MOVEMENT##
+//###################
 
 void movePlayer()
 {
@@ -125,7 +101,7 @@ void movePlayer()
       else
       {
         playerx= 7;
-        DrawPx(playerx, playery, Yellow);  //character loops around
+        DrawPx(playerx, playery, Yellow);  //character loops around for game balance
       }
     }
     break;
@@ -139,12 +115,21 @@ void movePlayer()
       }
       else
       {
-        playerx= 0;
-        DrawPx(playerx, playery, Yellow);  //character loops around
+        playerx = 0;
+        DrawPx(playerx, playery, Yellow);  //character loops around for game balance
       }
     }
   }
 }
+
+//#######
+//##END##
+//#######
+
+
+//##############
+//##DIRECTIONS##
+//##############
 
 void directions()  //was having a weird problem with the left not registering, Devon helped me out. Big ups
 {
@@ -153,30 +138,39 @@ void directions()  //was having a weird problem with the left not registering, D
   {
     playerDirection = 1;
   }
-  else {
+  else
+  {
     if (Button_Right)
       {
         playerDirection = 2;
       }
-    else {
+    else
+    {
       playerDirection = 0;
     }
   }
 }
 
-  
-  
+//#######
+//##END##
+//#######
+
+//############
+//##THE LOOP##
+//############
 
 void loop()
 { 
   ClearSlate();
-  newCeiling();
-  //gapUpdate();
+  ceiling();
   directions();
   movePlayer();
   DisplaySlate();
   delay(40);
 }
-  
+
+//###########
+//##THE END##
+//###########
 
 
