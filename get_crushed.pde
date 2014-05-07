@@ -32,7 +32,6 @@ struct point
 {
   int x;
   int y;
-  int color;
 };
 
 
@@ -48,7 +47,10 @@ byte playerx = 3;
 byte playery = 0;
 int playerDirection = 0;  //1 moves left, 2 moves right
 int restOfCeiling = 8;
-
+int counter = 0;//this counter will be part of the modulus, and will affect the player's movement at the press of button A.
+int speedCount = 2;  //a (possibly temporary) number for the speed of the player just to slow him down some.
+int wallSpeed = 8;  //this will be part of the wall modulus. It will decrease the further the player gets, thus making the game faster.
+//if(counter%speedCount == 3)
 //#######
 //##END##
 //#######
@@ -97,6 +99,11 @@ void ceilingHole()
 //###################
 //##PLAYER MOVEMENT##
 //###################
+
+void drawPlayer()
+{
+  DrawPx(playerx, playery, Yellow);
+}
 
 void movePlayer()
 {
@@ -178,12 +185,37 @@ void directions()  //was having a weird problem with the left not registering, D
 
 void loop()
 { 
+  if (counter > 2){
+    counter = 0;
+  }
+  else
+  {
+    counter++;
+  }
   ClearSlate();
-  ceiling();
+  //ceilingHole();
   directions();
-  movePlayer();
+  CheckButtonsDown();
+  {
+    if (Button_A)
+    {
+      movePlayer();
+    }
+    else
+    {
+      if(counter%speedCount == 1)
+      {
+        movePlayer();
+      }
+    }
+  }
+  drawPlayer();
+  if(counter%wallSpeed == 1)
+  {
+    ceiling();
+  }
   DisplaySlate();
-  delay(80);
+  delay(40);
 }
 
 //###########
