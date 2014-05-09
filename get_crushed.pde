@@ -75,14 +75,17 @@ void ceiling()
       wall[i].y = 7;
       DrawPx(wall[i].x, wall[i].y, White);
     }
+    int temp = random(8);
+    DrawPx(wall[temp].x, wall[i].y, Dark);
   }
 }
 
 void ceilingHole()
 {
+  int xcoord = random(8);
   for(int y = 7; y >=0; y--)
   {
-    DrawPx(random(8), y, Green);
+    DrawPx(wall[xcoord].x, wall[y].y, Green);
     if( y >=0)
     {
       y--;
@@ -90,7 +93,7 @@ void ceilingHole()
     else
     {
       y = 7;
-      DrawPx(random(8), y, Green);
+      DrawPx(wall[xcoord].x, wall[y].y, Green);
     }
   }
 }
@@ -210,12 +213,14 @@ void loop()
     }
   }
   drawPlayer();
-  if(counter%wallSpeed == 1)
+  /*if(counter%wallSpeed == 1)
   {
     ceiling();
-  }
+  }*/
+  //ceilingHole();
+  ceiling();
   DisplaySlate();
-  delay(40);
+  delay(500);
 }
 
 //###########
