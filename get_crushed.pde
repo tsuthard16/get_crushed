@@ -41,16 +41,19 @@ point wall[8] = {{0,7}, {1,7}, {2,7}, {3,7}, {4,7}, {5,7}, {6,7}, {7,7}};
 //##VARIABLES##
 //#############
 
-int i = 0;
-int j = 7;
+
 byte playerx = 3;
 byte playery = 0;
 int playerDirection = 0;  //1 moves left, 2 moves right
 int restOfCeiling = 8;
 int counter = 0;//this counter will be part of the modulus, and will affect the player's movement at the press of button A.
 int speedCount = 2;  //a (possibly temporary) number for the speed of the player just to slow him down some.
-int wallSpeed = 8;  //this will be part of the wall modulus. It will decrease the further the player gets, thus making the game faster.
+int wallSpeed = 8;//this will be part of the wall modulus. It will decrease the further the player gets, thus making the game faster.
 //if(counter%speedCount == 3)
+int t = 0;  //for the generation of holes in the ceiling
+int temp = random(8);
+int time = 1;
+
 //#######
 //##END##
 //#######
@@ -58,13 +61,21 @@ int wallSpeed = 8;  //this will be part of the wall modulus. It will decrease th
 void setup()
 {
   MeggyJrSimpleSetup();
+  while(!Button_A)
+  {
+    delay(1);
+    time++;
+    CheckButtonsPress();
+  }
+  randomSeed(time);
+    
 }
 
 //###############
 //##THE CEILING##
 //###############
 
-void ceiling()
+void moveCeiling()
 {
   for(int i = 7; i >= 0; i--)
   {
@@ -78,8 +89,11 @@ void ceiling()
       wall[i].y = 7;
       DrawPx(wall[i].x, wall[i].y, White);
     }
-    //int temp = random(8);                  //Code for the hole in the ceiling.
-    //DrawPx(wall[temp].x, wall[i].y, Dark);
+    /*if(t%8 == 0)
+    {
+      int temp = random(8);
+      DrawPx(temp, wall[i].y, Green);
+    }*/
   }
 }
 
@@ -89,7 +103,22 @@ void drawCeiling()
   {
     DrawPx(wall[i].x, wall[i].y, White);
   }
+
 }
+
+void drawCeilingHole()
+{
+  for(int i = 7; i >=0; i--)
+  {
+    DrawPx(temp, wall[i].y, Dark);
+  
+    if(wall[i].y == 0)
+    {
+      temp = random(8);
+    }
+  }
+}
+
 
 void ceilingHole()
 {
@@ -227,11 +256,12 @@ void loop()
   drawPlayer();
   
   drawCeiling();
+  drawCeilingHole();
   if(counter%wallSpeed == 1)
   {
-    ceiling();
+    moveCeiling();
   }
-  
+  //drawCeilingHole();
   DisplaySlate();
   delay(100);
 }
