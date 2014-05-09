@@ -60,6 +60,9 @@ void setup()
   MeggyJrSimpleSetup();
 }
 
+//###############
+//##THE CEILING##
+//###############
 
 void ceiling()
 {
@@ -75,8 +78,16 @@ void ceiling()
       wall[i].y = 7;
       DrawPx(wall[i].x, wall[i].y, White);
     }
-    int temp = random(8);
-    DrawPx(wall[temp].x, wall[i].y, Dark);
+    //int temp = random(8);                  //Code for the hole in the ceiling.
+    //DrawPx(wall[temp].x, wall[i].y, Dark);
+  }
+}
+
+void drawCeiling()
+{
+  for(int i = 7; i >= 0; i--)
+  {
+    DrawPx(wall[i].x, wall[i].y, White);
   }
 }
 
@@ -188,16 +199,17 @@ void directions()  //was having a weird problem with the left not registering, D
 
 void loop()
 { 
-  if (counter > 2){
+  if (counter > 2){  //this "counter" goes up to two every two times through the loop and is used for the "boost" button for the player.
     counter = 0;
   }
   else
   {
     counter++;
   }
+  
   ClearSlate();
-  //ceilingHole();
   directions();
+  
   CheckButtonsDown();
   {
     if (Button_A)
@@ -213,18 +225,17 @@ void loop()
     }
   }
   drawPlayer();
-  /*if(counter%wallSpeed == 1)
+  
+  drawCeiling();
+  if(counter%wallSpeed == 1)
   {
     ceiling();
-  }*/
-  //ceilingHole();
-  ceiling();
+  }
+  
   DisplaySlate();
-  delay(500);
+  delay(100);
 }
 
 //###########
 //##THE END##
 //###########
-
-
