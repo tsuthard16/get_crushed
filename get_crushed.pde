@@ -60,6 +60,7 @@ int time = 1;
 
 void setup()
 {
+  Serial.begin(9600);
   ClearSlate();
   MeggyJrSimpleSetup();
   DrawPx(2,1,Red);    //Draws a big red A to hopefully tell the player to press that button
@@ -95,6 +96,11 @@ void moveCeiling()
   for(int i = 7; i >= 0; i--)
   {
     DrawPx(wall[i].x, wall[i].y, White);
+    DrawPx(temp, wall[i].y, Dark);
+    if(wall[i].y == 0)
+    {
+      temp = random(8);
+    }
     if(wall[i].y >= 0)
     {
       wall[i].y--;
@@ -104,11 +110,6 @@ void moveCeiling()
       wall[i].y = 7;
       DrawPx(wall[i].x, wall[i].y, White);
     }
-    /*if(t%8 == 0)
-    {
-      int temp = random(8);
-      DrawPx(temp, wall[i].y, Green);
-    }*/
   }
 }
 
@@ -117,11 +118,15 @@ void drawCeiling()
   for(int i = 7; i >= 0; i--)
   {
     DrawPx(wall[i].x, wall[i].y, White);
+    DrawPx(temp, wall[i].y, Dark);
+    if(wall[i].y == 0)
+    {
+      temp = random(8);
+    }
   }
-
 }
 
-void drawCeilingHole()
+void moveCeilingHole()
 {
   for(int i = 7; i >=0; i--)
   {
@@ -135,21 +140,11 @@ void drawCeilingHole()
 }
 
 
-void ceilingHole()
+void drawCeilingHole()
 {
-  int xcoord = random(8);
-  for(int y = 7; y >=0; y--)
+  for(int i = 7; i >= 0; i--)
   {
-    DrawPx(wall[xcoord].x, wall[y].y, Green);
-    if( y >=0)
-    {
-      y--;
-    }
-    else
-    {
-      y = 7;
-      DrawPx(wall[xcoord].x, wall[y].y, Green);
-    }
+    DrawPx(temp, wall[i-1].y, Dark);
   }
 }
     
@@ -243,6 +238,7 @@ void directions()  //was having a weird problem with the left not registering, D
 
 void loop()
 { 
+  Serial.println("Loop");
   if (counter > 2){  //this "counter" goes up to two every two times through the loop and is used for the "boost" button for the player.
     counter = 0;
   }
@@ -254,6 +250,13 @@ void loop()
   ClearSlate();
   directions();
   
+  drawCeiling();
+  if(counter%wallSpeed == 1)
+  {
+    moveCeiling();
+  }
+  //drawCeilingHole();
+  //moveCeilingHole();
   CheckButtonsDown();
   {
     if (Button_A)
@@ -269,14 +272,6 @@ void loop()
     }
   }
   drawPlayer();
-  
-  drawCeiling();
-  drawCeilingHole();
-  if(counter%wallSpeed == 1)
-  {
-    moveCeiling();
-  }
-  //drawCeilingHole();
   DisplaySlate();
   delay(100);
 }
