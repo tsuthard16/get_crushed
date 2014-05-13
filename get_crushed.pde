@@ -66,6 +66,20 @@ void setup()
     delay(1);
     time++;
     CheckButtonsPress();
+    DrawPx(2,1,Red);  //Draws a big red A to hopefully tell the player to press that button
+    DrawPx(2,2,Red);
+    DrawPx(2,3,Red);
+    DrawPx(2,4,Red);
+    DrawPx(2,5,Red);
+    DrawPx(3,5,Red);
+    DrawPx(4,5,Red);
+    DrawPx(5,5,Red);
+    DrawPx(5,4,Red);
+    DrawPx(5,3,Red);
+    DrawPx(5,2,Red);
+    DrawPx(5,1,Red);
+    DrawPx(3,3,Red);
+    DrawPx(4,3,Red);
   }
   randomSeed(time);
     
