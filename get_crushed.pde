@@ -60,7 +60,7 @@ int time = 1;
 
 void setup()
 {
-  Serial.begin(9600);
+  //Serial.begin(9600);
   ClearSlate();
   MeggyJrSimpleSetup();
   DrawPx(2,1,Red);    //Draws a big red A to hopefully tell the player to press that button
@@ -84,7 +84,7 @@ void setup()
     time++;
     CheckButtonsPress();
   }
-  randomSeed(time);
+  randomSeed(time);  //random seeds with the time it takes the player to press the A button. 
 }
 
 //###############
@@ -96,7 +96,7 @@ void moveCeiling()
   for(int i = 7; i >= 0; i--)
   {
     DrawPx(wall[i].x, wall[i].y, White);
-    DrawPx(temp, wall[i].y, Dark);
+    DrawPx(temp, wall[i].y, Dark);  //This is the code for the hole in the wall. It's here and in the drawCeiling method because that works somehow ;_;.
     if(wall[i].y == 0)
     {
       temp = random(8);
@@ -118,7 +118,7 @@ void drawCeiling()
   for(int i = 7; i >= 0; i--)
   {
     DrawPx(wall[i].x, wall[i].y, White);
-    DrawPx(temp, wall[i].y, Dark);
+    DrawPx(temp, wall[i].y, Dark);  //code for the ceiling hole. It grabs a random xcoord and draws it on the same level as the rest of the wall.
     if(wall[i].y == 0)
     {
       temp = random(8);
@@ -126,28 +126,23 @@ void drawCeiling()
   }
 }
 
-void moveCeilingHole()
-{
-  for(int i = 7; i >=0; i--)
-  {
-    DrawPx(temp, wall[i].y, Dark);
-  
-    if(wall[i].y == 0)
-    {
-      temp = random(8);
-    }
-  }
-}
-
-
-void drawCeilingHole()
+void checkRekt()
 {
   for(int i = 7; i >= 0; i--)
+  if(wall[i].x == playerx && wall[i].y == playery)
   {
-    DrawPx(temp, wall[i-1].y, Dark);
+    for(int x = 0; x < 8; x++)
+    {
+      for(int y = 0; y < 8; y++)
+      {
+        DrawPx(x, y, Red);  //Big Red screen just to let you know how bad you are at this game.
+        //Serial.println("Failed");
+      }
+    }
+    DisplaySlate();
+    delay(1000);
   }
-}
-    
+}    
 
 //###################
 //##PLAYER MOVEMENT##
@@ -238,8 +233,9 @@ void directions()  //was having a weird problem with the left not registering, D
 
 void loop()
 { 
-  Serial.println("Loop");
-  if (counter > 2){  //this "counter" goes up to two every two times through the loop and is used for the "boost" button for the player.
+  //Serial.println("Loop");
+  if (counter > 2)  //this "counter" goes up to two every two times through the loop and is used for the "boost" button for the player.
+  {  
     counter = 0;
   }
   else
@@ -255,8 +251,6 @@ void loop()
   {
     moveCeiling();
   }
-  //drawCeilingHole();
-  //moveCeilingHole();
   CheckButtonsDown();
   {
     if (Button_A)
@@ -272,6 +266,7 @@ void loop()
     }
   }
   drawPlayer();
+  //checkRekt();
   DisplaySlate();
   delay(100);
 }
