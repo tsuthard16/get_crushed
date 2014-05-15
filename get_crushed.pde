@@ -38,10 +38,11 @@ byte playery = 0;
 int playerDirection = 0;  //1 moves left, 2 moves right
 int counter = 0;//this counter will be part of the modulus, and will affect the player's movement at the press of button A.
 int speedCount = 2;  //a (possibly temporary) number for the speed of the player just to slow him down some.
-int wallSpeed = 8;//this will be part of the wall modulus. It will decrease the further the player gets, thus making the game faster.
+int wallSpeed = 0;//this will be part of the wall modulus. It will decrease the further the player gets, thus making the game faster.
 int temp = random(8);
 int time = 1;
 boolean alive = 1;
+int d = 100;
 
 //#######
 //##END##
@@ -145,6 +146,7 @@ void checkRekt()
         playerx = 3;
         playery = 0;
         wallSpeed = 8;
+        d = 100;
         DisplaySlate();
       }
     }
@@ -157,7 +159,8 @@ void speedUp()
   {
     if(playerx == temp && playery == wall[i].y)
     {
-      wallSpeed--;
+      Serial.println("SpeedUp");
+      d--;
     }
   }
 }
@@ -264,14 +267,14 @@ void loop()
   ClearSlate();
   directions();
   
-  if(counter%wallSpeed == 1)
+  if(counter%wallSpeed == 0)
   {
     moveCeiling();
   }
   drawCeiling();
   
   checkRekt();
-  //speedUp();
+  speedUp();
   
   CheckButtonsDown();
   {
@@ -290,7 +293,7 @@ void loop()
   drawPlayer();
   
   DisplaySlate();
-  delay(80);
+  delay(d);
 }
 
 //###########
