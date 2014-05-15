@@ -45,14 +45,12 @@ point wall[8] = {{0,7}, {1,7}, {2,7}, {3,7}, {4,7}, {5,7}, {6,7}, {7,7}};
 byte playerx = 3;
 byte playery = 0;
 int playerDirection = 0;  //1 moves left, 2 moves right
-int restOfCeiling = 8;
 int counter = 0;//this counter will be part of the modulus, and will affect the player's movement at the press of button A.
 int speedCount = 2;  //a (possibly temporary) number for the speed of the player just to slow him down some.
 int wallSpeed = 8;//this will be part of the wall modulus. It will decrease the further the player gets, thus making the game faster.
-//if(counter%speedCount == 3)
-int t = 0;  //for the generation of holes in the ceiling
 int temp = random(8);
 int time = 1;
+boolean alive = 1;
 
 //#######
 //##END##
@@ -60,7 +58,7 @@ int time = 1;
 
 void setup()
 {
-  //Serial.begin(9600);
+  Serial.begin(9600);
   ClearSlate();
   MeggyJrSimpleSetup();
   DrawPx(2,1,Red);    //Draws a big red A to hopefully tell the player to press that button
@@ -93,25 +91,18 @@ void setup()
 
 void moveCeiling()
 {
+  // decreases y on every value in the array.
   for(int i = 7; i >= 0; i--)
   {
-    DrawPx(wall[i].x, wall[i].y, White);
-    DrawPx(temp, wall[i].y, Dark);  //This is the code for the hole in the wall. It's here and in the drawCeiling method because that works somehow ;_;.
-    if(wall[i].y == 0)
+    if (wall[i].y < 0)
     {
-      temp = random(8);
+      wall[i].y = 7;    //when the ceiling reaches the bottom it "loops" back to the top
+      temp = random(8); //create a new hole x variable.
     }
-    if(wall[i].y >= 0)
-    {
-      wall[i].y--;
-    }
-    else  //makes the ceiling loop back around to the top
-    {
-      wall[i].y = 7;
-      DrawPx(wall[i].x, wall[i].y, White);
-    }
+    else wall[i].y--;
   }
 }
+
 
 void drawCeiling()
 {
@@ -119,26 +110,22 @@ void drawCeiling()
   {
     DrawPx(wall[i].x, wall[i].y, White);
     DrawPx(temp, wall[i].y, Dark);  //code for the ceiling hole. It grabs a random xcoord and draws it on the same level as the rest of the wall.
-    if(wall[i].y == 0)
-    {
-      temp = random(8);
-    }
   }
 }
 
 void checkRekt()
 {
   for(int i = 7; i >= 0; i--)
-  if(wall[i].x == playerx && wall[i].y == playery)
+  if(wall[i].x == playerx && wall[i].y == playery && ReadPx(playerx, playery) == White)
   {
     for(int x = 0; x < 8; x++)
     {
       for(int y = 0; y < 8; y++)
       {
-        DrawPx(x, y, Red);  //Big Red screen just to let you know how bad you are at this game.
-        //Serial.println("Failed");
+        DrawPx(x, y, Red);
       }
     }
+    Serial.println("Dead");
     DisplaySlate();
     delay(1000);
   }
@@ -233,7 +220,7 @@ void directions()  //was having a weird problem with the left not registering, D
 
 void loop()
 { 
-  //Serial.println("Loop");
+  Serial.println("Loop");
   if (counter > 2)  //this "counter" goes up to two every two times through the loop and is used for the "boost" button for the player.
   {  
     counter = 0;
@@ -246,11 +233,14 @@ void loop()
   ClearSlate();
   directions();
   
-  drawCeiling();
   if(counter%wallSpeed == 1)
   {
     moveCeiling();
   }
+  drawCeiling();
+  
+  checkRekt();
+  
   CheckButtonsDown();
   {
     if (Button_A)
@@ -266,7 +256,7 @@ void loop()
     }
   }
   drawPlayer();
-  //checkRekt();
+  
   DisplaySlate();
   delay(100);
 }
