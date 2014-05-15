@@ -15,15 +15,6 @@ The delay of the cieling falling will decrease each time.
 If the player presses a button, it will speed up his character's movement, which
 will help in the late game.
 
-
-
-The wall's hole.
-Psuedo-code from Mr. Kiang:
-void wallHole(){
-  pick a random(8);
-  set the point at that index to be color 0
-}
-
 */
 
 #include <MeggyJrSimple.h>
@@ -126,10 +117,50 @@ void checkRekt()
       }
     }
     Serial.println("Dead");
+    wallSpeed = 0;
     DisplaySlate();
-    delay(1000);
+    delay(500);
+    while (!Button_A)
+    {
+      ClearSlate();
+      DrawPx(2,1,Red);    //Draws a big red A to hopefully tell the player to press that button
+      DrawPx(2,2,Red);
+      DrawPx(2,3,Red);
+      DrawPx(2,4,Red);
+      DrawPx(2,5,Red);
+      DrawPx(3,5,Red);
+      DrawPx(4,5,Red);
+      DrawPx(5,5,Red);
+      DrawPx(5,4,Red);
+      DrawPx(5,3,Red);
+      DrawPx(5,2,Red);
+      DrawPx(5,1,Red);
+      DrawPx(3,3,Red);
+      DrawPx(4,3,Red);
+      DisplaySlate();
+      CheckButtonsDown();
+      if(Button_A)
+      {
+        ClearSlate();
+        playerx = 3;
+        playery = 0;
+        wallSpeed = 8;
+        DisplaySlate();
+      }
+    }
   }
 }    
+
+void speedUp()
+{
+  for(int i = 7; i >= 0; i--)
+  {
+    if(playerx == temp && playery == wall[i].y)
+    {
+      wallSpeed--;
+    }
+  }
+}
 
 //###################
 //##PLAYER MOVEMENT##
@@ -240,6 +271,7 @@ void loop()
   drawCeiling();
   
   checkRekt();
+  //speedUp();
   
   CheckButtonsDown();
   {
@@ -258,7 +290,7 @@ void loop()
   drawPlayer();
   
   DisplaySlate();
-  delay(100);
+  delay(80);
 }
 
 //###########
