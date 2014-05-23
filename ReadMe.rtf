@@ -1,0 +1,35 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf400
+{\fonttbl\f0\fmodern\fcharset0 CourierNewPSMT;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\f0\fs24 \cf0 Ty Suthard\
+Mr. Kiang\
+Intro Comp Sci\
+\
+Meggy Final Project\
+\
+//////////\
+\
+get_crushed\
+\
+//////////\
+\
+For centuries, the ceiling has been an enemy for the yellow dot race.\
+Now. They have performed an all-out assault. You have no way to fight back, you can only try to fit through the gaps in the ceilings' forces.\
+Survive, or Die!\
+\
+For real though, you're gonna get decimated.\
+\
+//////////\
+\
+The most difficult part about making this game was getting started. Getting the player to move around was easy, I've been doing that since we started messing around with the Meggy, but in general, there were a lot of bugs in the beginning that wouldn't allow for any further progress until they were fixed. Almost 50% of the project was working on getting those bugs out of the way. I was surprised at how little flexibility I had while making the game. The fact that the Arduino is so limited in its capabilities makes it a lot harder to make something exactly the way you want it to be. I discovered this when I was trying to get the wall to move at a different speed from the player. In order to get it working in the way I wanted, I had to use a "modulo", a device which probably was made just for such a reason.\
+Working with Devon as a partner helped me out more than anything else. He gave tips on how to get past certain certain obstacles and let me look at his code to get ideas on how to fix even more obstacles. Overall, it made the experience a lot less painful. \
+A few bugs:\
+a. For some mysterious reason, weird colors will show up after the player passes through the wall. I did some troubleshooting on this, and discovered that the problem lies within the "speedUp" method. Unfortunately, I have no idea why it's causing the problem, since there are no DrawPx statements, or calls for color of any kind. In any case, I have a feeling it has something to do with the delay decrease of the game itself.\
+b. The second problem lies with the "checkRekt" method. While I can get most variables to reset correctly when the player gets crushed, any attempts to reset the height of the wall result in massive errors. So, I had to leave that part of the method out. This wouldn't normally be a problem, but in some cases, after the player dies, the wall repeatedly falls down on the player, resulting in multiple fail screens. You get past it eventually, and the game will continue as normal, but it can be slightly annoying.\
+If I had more time to work on this project, I would implement a score meter with the AUX Leds that work correctly. I tried implementing them before, but it resulted in some mysterious bugs, most of which I couldn't fix with the time I had left for making the project. In general, I think people like having a little score meter even if it doesn't mean anything.\
+This game taught me that sometimes, it can be tough to get started on a project, but once you get going, it's actually not that bad.\
+I also learned that it's generally a good idea to get help from other dudes on problems that you can't solve on your own. Like you said, it's generally not worth your time to spend more than 45 minutes on a single problem. It's not fun either. \
+}
